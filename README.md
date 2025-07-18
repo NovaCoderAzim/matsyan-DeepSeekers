@@ -104,7 +104,7 @@ Map View with Suggestions	        Zone Tooltip Details
 
 YouTube Demo Video
 👉 Watch: DeepSeek – Fishing Route Optimizer Demo
-(Upload your 2–5 min demo to YouTube and replace this link.)
+https://youtu.be/apzFuYHWucY?feature=shared
 
 
 👥 Team Members
@@ -140,11 +140,6 @@ This project was built under the time constraints of the Agentic Hackathon 2025.
 License
 This project is open-source and available under the MIT License.
 
-yaml
-Copy
-Edit
-
----
 
 ### ✅ Next Steps
 - Replace placeholders like:
