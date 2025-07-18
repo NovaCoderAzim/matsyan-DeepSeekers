@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Fishing Route Optimizer</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<div id="route-info" style="display: none;"></div>
+
+<!-- Location Controls -->
+<div id="location-controls" class="map-controls">
+  <button id="set-location-btn" class="control-btn" title="Set location manually">
+    <i class="fas fa-map-marker-alt"></i>
+  </button>
+  <button id="gps-btn" class="control-btn" title="Use GPS location">
+    <i class="fas fa-location-arrow"></i>
+  </button>
+</div>
+
+<!-- Navigation Controls -->
+<div id="nav-controls">
+  <button id="confirm-nav" class="nav-btn">
+    <i class="fas fa-route"></i> Navigate
+  </button>
+  <button id="cancel-nav" class="nav-btn">
+    <i class="fas fa-times"></i> Cancel
+  </button>
+</div>
+<body>
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-fish"></i>
+          <h1>Fishing Route Optimizer</h1>
+        </div>
+        <p class="tagline">Smart marine navigation for professional fishermen</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      <!-- Map Container -->
+      <div id="map-container">
+        <div id="map"></div>
+        <div id="loader">
+          <div class="spinner"></div>
+          <p>Analyzing marine conditions...</p>
+        </div>
+      </div>
+
+      <!-- Side Panel -->
+      <div class="side-panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-info-circle"></i> Zone Details</h3>
+        </div>
+        <div id="zone-details">
+          <div class="empty-state">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>Click any fishing zone on the map</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>© 2025 Fishing Route Optimizer | Data: StormGlass & OpenWeatherMap</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
