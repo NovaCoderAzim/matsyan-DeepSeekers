@@ -341,3 +341,57 @@ body {
   margin-bottom: 6px;
   color: #333;
 }
+/* ==================== MAP CONTAINER ==================== */
+/* Add these styles to map.css */
+
+/* Ensure map container fills available space */
+#map-container {
+  position: relative;
+  width: 100%;
+  height: 70vh; /* Adjust based on your needs */
+  min-height: 500px;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Adjust side panel layout */
+.app-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+@media (min-width: 1024px) {
+  .app-main {
+    flex-direction: row;
+  }
+  
+  .side-panel {
+    width: 350px;
+    flex-shrink: 0;
+  }
+  
+  #map-container {
+    flex-grow: 1;
+  }
+}
+
+/* Ensure controls are visible */
+.map-controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

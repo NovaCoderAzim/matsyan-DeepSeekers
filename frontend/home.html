@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fishing Route Optimizer | DeepSeekers</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <!-- Map Styles -->
+  <link rel="stylesheet" href="css/map.css">
+</head>
+<body>
+  <!-- ==================== NAVIGATION BAR ==================== -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">
+        <i class="fas fa-fish"></i>
+        <span>FishRouteOptimizer</span>
+      </div>
+      
+      <div class="nav-links">
+        <a href="#home" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+        <a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        <a href="#features" class="nav-link"><i class="fas fa-star"></i> Features</a>
+        <a href="#app" class="nav-link"><i class="fas fa-map-marked-alt"></i> Map Tool</a>
+      </div>
+      
+      <div class="user-section">
+        <span id="user-greeting" class="user-greeting"></span>
+        <button id="login-btn" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button id="logout-btn" class="btn btn-outline hidden"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <button id="mobile-menu-btn" class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="#home" class="mobile-nav-link active"><i class="fas fa-home"></i> Home</a>
+    <a href="#about" class="mobile-nav-link"><i class="fas fa-info-circle"></i> About</a>
+    <a href="#features" class="mobile-nav-link"><i class="fas fa-star"></i> Features</a>
+    <a href="#app" class="mobile-nav-link"><i class="fas fa-map-marked-alt"></i> Map Tool</a>
+    <button id="mobile-login-btn" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+  </div>
+
+  <!-- ==================== LOGIN MODAL ==================== -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <div class="modal-header">
+        <i class="fas fa-user-circle"></i>
+        <h3>Fisherman Login</h3>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username"><i class="fas fa-user"></i> Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+          <label for="password"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+      </form>
+      <div class="modal-footer">
+        <p>Don't have an account? <a href="#" class="register-link">Register here</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== HERO SECTION ==================== -->
+  <section id="home" class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <h1>Smart Fishing Route Optimization</h1>
+        <p class="subtitle">Maximize your catch with RULE-BASED marine weather analysis</p>
+        <div class="hero-buttons">
+          <a href="#app" class="btn btn-primary btn-lg"><i class="fas fa-map-marked-alt"></i> Try the Tool</a>
+          <a href="#features" class="btn btn-outline btn-lg"><i class="fas fa-star"></i> Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="wave-divider">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="#fff"></path>
+        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="#fff"></path>
+        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="#fff"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== ABOUT SECTION ==================== -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>About Our Project</h2>
+        <p class="section-subtitle">Revolutionizing fishing with smart technology</p>
+      </div>
+      
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="card-icon">
+            <i class="fas fa-water"></i>
+          </div>
+          <h3>Marine Weather</h3>
+          <p>Real-time analysis of sea conditions including temperature, wind speed, and wave height.</p>
+        </div>
+        
+        <div class="about-card">
+          <div class="card-icon">
+            <i class="fas fa-route"></i>
+          </div>
+          <h3>Route Optimization</h3>
+          <p>Smart algorithms suggest the most productive fishing routes based on current conditions.</p>
+        </div>
+        
+        <div class="about-card">
+          <div class="card-icon">
+            <i class="fas fa-fish"></i>
+          </div>
+          <h3>Catch Prediction</h3>
+          <p>Higher probability fishing zones identified using historical and real-time data.</p>
+        </div>
+        
+        <div class="about-card">
+          <div class="card-icon">
+            <i class="fas fa-gas-pump"></i>
+          </div>
+          <h3>Fuel Efficiency</h3>
+          <p>Reduce unnecessary trips and optimize fuel consumption for maximum profitability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURES SECTION ==================== -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Key Features</h2>
+        <p class="section-subtitle">Everything you need for successful fishing trips</p>
+      </div>
+      
+      <div class="features-container">
+        <div class="feature-image">
+            <img src="asserts/image/BGimage.png" alt="Fishing Route Optimization ">
+        </div>
+        
+        <div class="feature-list">
+          <div class="feature-item">
+            <div class="feature-number">01</div>
+            <div class="feature-content">
+              <h3>Zone Scoring System</h3>
+              <p>Automatically rates fishing zones from 1-10 based on optimal conditions.</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-number">02</div>
+            <div class="feature-content">
+              <h3>Real-Time Weather Data</h3>
+              <p>Integrated with StormGlass and OpenWeatherMap APIs for accurate marine conditions.</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-number">03</div>
+            <div class="feature-content">
+              <h3>Interactive Map</h3>
+              <p>Click anywhere on the sea to generate potential fishing zones around that location.</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-number">04</div>
+            <div class="feature-content">
+              <h3>Navigation Assistance</h3>
+              <p>Get bearing, distance and ETA to your selected fishing zone.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== MAP TOOL SECTION ==================== -->
+<!-- Update the map section in home.html -->
+<section id="app" class="map-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Fishing Route Optimizer</h2>
+      <p class="section-subtitle">Smart marine navigation for professional fishermen</p>
+    </div>
+    
+    <div class="app-wrapper">
+      <!-- Map Container with proper structure -->
+      <div id="map-container">
+        <div id="map"></div>
+        <div id="loader">
+          <div class="spinner"></div>
+          <p>Analyzing marine conditions...</p>
+        </div>
+        
+        <!-- Location Controls -->
+        <div id="location-controls" class="map-controls">
+          <button id="set-location-btn" class="control-btn" title="Set location manually">
+            <i class="fas fa-map-marker-alt"></i>
+          </button>
+          <button id="gps-btn" class="control-btn" title="Use GPS location">
+            <i class="fas fa-location-arrow"></i>
+          </button>
+        </div>
+        
+        <!-- Navigation Controls -->
+        <div id="nav-controls">
+          <button id="confirm-nav" class="nav-btn">
+            <i class="fas fa-route"></i> Navigate
+          </button>
+          <button id="cancel-nav" class="nav-btn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </div>
+
+      <!-- Side Panel -->
+      <div class="side-panel">
+        <div class="panel-header">
+          <h3><i class="fas fa-info-circle"></i> Zone Details</h3>
+        </div>
+        <div id="zone-details">
+          <div class="empty-state">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>Click any fishing zone on the map</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-about">
+          <div class="footer-logo">
+            <i class="fas fa-fish"></i>
+            <span>FishRoutePro</span>
+          </div>
+          <p>Smart marine navigation for professional fishermen.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+            <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
+            <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+            <li><a href="#app"><i class="fas fa-chevron-right"></i> Map Tool</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-contact">
+          <h4>Contact Us</h4>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> Marine Tech Park, Fishing Harbor</li>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-envelope"></i> contact@fishroutepro.com</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Fishing Route Optimizer. All rights reserved.</p>
+        <div class="legal-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Your existing map script -->
+  <script src="js/map.js"></script>
+  <!-- Home page script -->
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -331,3 +331,86 @@ function showErrorState() {
     </div>
   `;
 }
+
+
+// Add these functions to map.js
+
+function handleSetLocation() {
+  isSettingLocation = true;
+  alert("Please click on the map to set your location");
+}
+
+function handleGPSLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserLocation([pos.coords.latitude, pos.coords.longitude]);
+        alert("Location set! Now click on the sea to find fishing zones");
+      },
+      (err) => {
+        alert("Please enable location permissions in your browser settings");
+        console.error("GPS Error:", err);
+      },
+      { enableHighAccuracy: true }
+    );
+  } else {
+    alert("Geolocation not supported by your browser");
+  }
+}
+
+// Update the initialization code at the bottom of map.js
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize map controls if they exist
+  const setLocationBtn = document.getElementById('set-location-btn');
+  const gpsBtn = document.getElementById('gps-btn');
+  
+  if (setLocationBtn && gpsBtn) {
+    setLocationBtn.addEventListener('click', handleSetLocation);
+    gpsBtn.addEventListener('click', handleGPSLocation);
+  }
+});
+
+function drawNavigationRoute() {
+  if (navRoute) map.removeLayer(navRoute);
+
+  const zoneCoords = [selectedZone.lat, selectedZone.lon];
+  
+  // Check if user is on land or water
+  const isOnWater = isPointInWater(userLocation);
+  
+  if (isOnWater) {
+    // Direct route if already on water
+    navRoute = L.polyline([userLocation, zoneCoords], {
+      color: '#3b82f6',
+      dashArray: '5, 5',
+      weight: 3
+    }).addTo(map);
+  } else {
+    // Find nearest coastal point
+    const coastPoint = findNearestCoastalPoint(userLocation);
+    
+    // Route to coast then to zone
+    navRoute = L.polyline([userLocation, coastPoint, zoneCoords], {
+      color: '#3b82f6',
+      dashArray: '5, 5',
+      weight: 3
+    }).addTo(map);
+  }
+
+  map.fitBounds([userLocation, zoneCoords]);
+  const routeInfo = calculateRouteInfo(userLocation, zoneCoords);
+  displayRouteInfo(routeInfo);
+}
+
+// Helper functions for marine routing
+function isPointInWater(coords) {
+  // This is a simplified check - you might want to use a proper API for this
+  // or have predefined coastal points
+  return false; // Default to false for demo
+}
+
+function findNearestCoastalPoint(coords) {
+  // Simplified - in a real app you'd use a coastal database or API
+  // This just returns a point slightly offshore
+  return [coords[0] + 0.1, coords[1] + 0.1];
+}
