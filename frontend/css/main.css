@@ -341,53 +341,169 @@ p {
 }
 
 /* ==================== FEATURES SECTION ==================== */
-.features-section {
-  background-color: var(--light-gray);
-}
-
-.features-container {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xl);
-  margin-top: var(--space-xl);
-}
-
-.feature-image {
-  flex: 1;
+/* ==================== FEATURES SECTION ENHANCEMENTS ==================== */
+.feature-visual {
+  position: relative;
+  height: 400px;
+  width: 100%;
   border-radius: var(--border-radius-lg);
   overflow: hidden;
+  background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
   box-shadow: var(--shadow-lg);
 }
 
-.feature-list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
+.fish-animation {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-.feature-item {
-  display: flex;
-  gap: var(--space-md);
+/* Fish Animation */
+.fish {
+  position: absolute;
+  width: 80px;
+  height: 40px;
+  background-color: #f59e0b;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  top: 50%;
+  left: 20%;
+  animation: swim 15s linear infinite;
+  transform-origin: center;
 }
 
-.feature-number {
-  width: 50px;
-  height: 50px;
-  background-color: var(--primary-blue);
-  color: var(--white);
-  border-radius: var(--border-radius-full);
+.fish:before {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  border-radius: 50%;
+  top: 10px;
+  left: 15px;
+}
+
+.fish:after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-color: #f59e0b;
+  border-radius: 50% 0 0 50%;
+  right: -15px;
+  top: 15px;
+}
+
+/* Bubbles */
+.bubbles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.bubbles:before,
+.bubbles:after {
+  content: '';
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: bubble-float 5s infinite ease-in;
+}
+
+.bubbles:before {
+  width: 15px;
+  height: 15px;
+  left: 30%;
+  top: 80%;
+}
+
+.bubbles:after {
+  width: 10px;
+  height: 10px;
+  left: 60%;
+  top: 70%;
+  animation-delay: 1s;
+}
+
+/* Waves */
+.waves {
+  position: absolute;
+  width: 200%;
+  height: 100px;
+  bottom: 0;
+  left: 0;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="rgba(255,255,255,0.1)"/></svg>');
+  background-size: cover;
+  animation: wave-animation 10s linear infinite;
+}
+
+/* Feature List Enhancements */
+.feature-sublist {
+  margin-top: 0.5rem;
+  list-style: none;
+}
+
+.feature-sublist li {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  flex-shrink: 0;
+  gap: 0.5rem;
+  color: var(--medium-gray);
 }
 
-.feature-content h3 {
-  color: var(--dark-gray);
+.feature-sublist i {
+  color: var(--success-green);
 }
 
+/* Animations */
+@keyframes swim {
+  0% {
+    transform: translateX(-50px) rotateY(0deg);
+  }
+  25% {
+    transform: translateX(100px) rotateY(0deg);
+  }
+  50% {
+    transform: translateX(200px) rotateY(180deg);
+  }
+  75% {
+    transform: translateX(100px) rotateY(180deg);
+  }
+  100% {
+    transform: translateX(-50px) rotateY(0deg);
+  }
+}
+
+@keyframes bubble-float {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-150px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .feature-visual {
+    height: 250px;
+  }
+  
+  .feature-sublist li {
+    font-size: 0.8rem;
+  }
+}
 /* ==================== MAP SECTION ==================== */
 .map-section {
   background-color: var(--white);
@@ -749,4 +865,407 @@ p {
   height: 100%;
   background-color: var(--dark-gray); /* Fallback color */
   z-index: -1;
+}
+
+/* About Section Styles */
+.about-section {
+  background: linear-gradient(to bottom, #f8fafc, #e0f2fe);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-content {
+  display: flex;
+  gap: 3rem;
+  margin-bottom: 4rem;
+  align-items: center;
+}
+
+.about-text {
+  flex: 1;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.about-visual {
+  flex: 1;
+  position: relative;
+  height: 300px;
+}
+
+/* 3D Boat Animation */
+.boat-model {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+}
+
+.boat {
+  position: absolute;
+  width: 150px;
+  height: 60px;
+  background: #3b82f6;
+  border-radius: 5px 20px 5px 5px;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%) rotateY(-15deg);
+  transform-style: preserve-3d;
+  animation: float 3s ease-in-out infinite;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.boat:before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 90px;
+  background: #1e40af;
+  right: 10px;
+  top: -80px;
+  transform: rotate(5deg);
+  transform-origin: bottom;
+  animation: sail 3s ease-in-out infinite;
+}
+
+.waves {
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  bottom: 30%;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%233b82f6" opacity=".25"/></svg>');
+  background-size: cover;
+  animation: wave 10s linear infinite;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--medium-gray);
+}
+
+/* Enhanced Card Animation */
+.about-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--primary-blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.about-card:hover .card-wave {
+  transform: scaleX(1);
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) rotateY(-15deg) translateY(0); }
+  50% { transform: translateX(-50%) rotateY(-15deg) translateY(-10px); }
+}
+
+@keyframes sail {
+  0%, 100% { transform: rotate(5deg); }
+  50% { transform: rotate(8deg); }
+}
+
+@keyframes wave {
+  0% { background-position-x: 0; }
+  100% { background-position-x: 1200px; }
+}
+
+
+/* Feature Item Animations */
+.feature-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+}
+
+.feature-item.animate-feature {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Feature Image Animation */
+.feature-image {
+  perspective: 1000px;
+}
+
+.feature-visual {
+  transform-style: preserve-3d;
+  transform: rotateY(10deg);
+  transition: transform 0.8s ease;
+}
+
+.features-container:hover .feature-visual {
+  transform: rotateY(0);
+}
+
+
+
+
+/* ==================== FEATURES SECTION ==================== */
+.features-section {
+  background: linear-gradient(to bottom, #f8fafc, #e0f2fe);
+  position: relative;
+  overflow: hidden;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.feature-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateY(0deg);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.feature-card:hover {
+  transform: perspective(1000px) rotateY(5deg) translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* Update the card-icon styles to make icons more visible */
+.card-icon {
+  font-size: 2.5rem;
+  color: var(--white); /* Keep white icons */
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Add consistent animation to all cards */
+.feature-card {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateY(0deg);
+  border: 1px solid rgba(255,255,255,0.3);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Animation when cards come into view */
+.feature-card.animate {
+  opacity: 1;
+  transform: translateY(0) perspective(1000px) rotateY(0deg);
+}
+
+/* Add hover effect to all cards */
+.feature-card:hover {
+  transform: perspective(1000px) rotateY(5deg) translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+.feature-card:hover .card-icon {
+  transform: scale(1.1) translateY(-5px);
+  background: linear-gradient(135deg, var(--dark-blue), var(--primary-blue));
+}
+
+/* Update the features grid to accommodate the new card */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.feature-card:hover .card-icon {
+  transform: scale(1.1) translateY(-5px);
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: var(--dark-gray);
+  position: relative;
+  display: inline-block;
+}
+
+.feature-card h3:after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--primary-blue);
+  transition: width 0.3s ease;
+}
+
+.feature-card:hover h3:after {
+  width: 80px;
+}
+
+.card-content {
+  margin-top: 15px;
+}
+
+.card-content p {
+  color: var(--medium-gray);
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+
+.feature-points {
+  list-style: none;
+  margin-top: 15px;
+}
+
+.feature-points li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.feature-points i {
+  color: var(--success-green);
+  font-size: 1.1rem;
+}
+
+.card-wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s ease;
+}
+
+.feature-card:hover .card-wave {
+  transform: scaleX(1);
+}
+
+/* 3D Effect on Hover */
+.feature-card:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(247, 249, 253, 0.1) 0%, rgba(216, 218, 223, 0.05) 100%);
+  transform: translateZ(-1px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.feature-card:hover:before {
+  opacity: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .feature-card {
+    padding: 25px;
+  }
+}
+
+/* ==================== LAND WARNING POPUP ==================== */
+.land-warning-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  display: none; /* Hidden by default */
+}
+
+.land-warning-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  max-width: 400px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.land-warning-content .fa-exclamation-triangle {
+  font-size: 3rem;
+  color: var(--danger-red);
+  margin-bottom: 1rem;
+}
+
+.land-warning-content p {
+  font-size: var(--text-lg);
+  margin-bottom: 1.5rem;
+}
+
+.land-warning-btn {
+  width: 100%;
 }

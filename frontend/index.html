@@ -9,27 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
 </head>
-<div id="route-info" style="display: none;"></div>
-
-<!-- Location Controls -->
-<div id="location-controls" class="map-controls">
-  <button id="set-location-btn" class="control-btn" title="Set location manually">
-    <i class="fas fa-map-marker-alt"></i>
-  </button>
-  <button id="gps-btn" class="control-btn" title="Use GPS location">
-    <i class="fas fa-location-arrow"></i>
-  </button>
-</div>
-
-<!-- Navigation Controls -->
-<div id="nav-controls">
-  <button id="confirm-nav" class="nav-btn">
-    <i class="fas fa-route"></i> Navigate
-  </button>
-  <button id="cancel-nav" class="nav-btn">
-    <i class="fas fa-times"></i> Cancel
-  </button>
-</div>
 <body>
   <div class="app-wrapper">
     <!-- Header -->
@@ -45,16 +24,36 @@
 
     <!-- Main Content -->
     <main class="app-main">
-      <!-- Map Container -->
+      <!-- Map Container (reduced width) -->
       <div id="map-container">
         <div id="map"></div>
         <div id="loader">
           <div class="spinner"></div>
           <p>Analyzing marine conditions...</p>
         </div>
+        
+        <!-- Location Controls -->
+        <div id="location-controls" class="map-controls">
+          <button id="set-location-btn" class="control-btn" title="Set location manually">
+            <i class="fas fa-map-marker-alt"></i>
+          </button>
+          <button id="gps-btn" class="control-btn" title="Use GPS location">
+            <i class="fas fa-location-arrow"></i>
+          </button>
+        </div>
+        
+        <!-- Navigation Controls -->
+        <div id="nav-controls">
+          <button id="confirm-nav" class="nav-btn">
+            <i class="fas fa-route"></i> Navigate
+          </button>
+          <button id="cancel-nav" class="nav-btn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
       </div>
 
-      <!-- Side Panel -->
+      <!-- Side Panel (now on right side) -->
       <div class="side-panel">
         <div class="panel-header">
           <h3><i class="fas fa-info-circle"></i> Zone Details</h3>
@@ -72,6 +71,14 @@
     <footer class="app-footer">
       <p>© 2025 Fishing Route Optimizer | Data: StormGlass & OpenWeatherMap</p>
     </footer>
+  </div>
+
+  <!-- Land Warning Popup -->
+  <div id="land-warning" class="land-warning">
+    <i class="fas fa-exclamation-triangle"></i>
+    <h3>Water Only</h3>
+    <p>Please select a location in water bodies only for fishing zone analysis.</p>
+    <button class="land-warning-btn">OK</button>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

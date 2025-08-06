@@ -3,17 +3,16 @@ import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-from datetime import datetime
+from datetime import datetime, timedelta
 import random
-
-
-
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-STORMGLASS_API_KEY = os.getenv("STORMGLASS_API_KEY")
+# Cache to reduce API calls
+API_CACHE = {}
+CACHE_EXPIRY = timedelta(minutes=30)
 
 def score_zone(data):
     temp = data.get("seaTemperature", {}).get("noaa")
@@ -24,7 +23,7 @@ def score_zone(data):
     score = 0
     reasons = []
 
-    # Sea Temperature (ideal: 24–28°C, acceptable: 22–30°C)
+    # Sea Temp
     if temp is not None:
         if 24 <= temp <= 28:
             score += 3
@@ -35,7 +34,7 @@ def score_zone(data):
         else:
             reasons.append("Poor sea temp")
 
-    # Wind Speed (m/s to km/h; ideal 5–18 km/h)
+    # Wind Speed (m/s to km/h)
     if wind is not None:
         wind_kmh = wind * 3.6
         if 5 <= wind_kmh <= 18:
@@ -75,53 +74,60 @@ def get_fishing_zones():
         lon = float(request.args.get("lon"))
         zones = []
 
-        for _ in range(5):  # Reduced from 10 to conserve API calls
-            # Generate nearby point
-            lat_offset = random.uniform(-0.3, 0.3)  # Smaller offset
+        start_time = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0).isoformat() + "Z"
+        end_time = (datetime.utcnow().replace(hour=1, minute=0, second=0, microsecond=0)).isoformat() + "Z"
+
+
+        for _ in range(5):
+            lat_offset = random.uniform(-0.3, 0.3)
             lon_offset = random.uniform(-0.3, 0.3)
             point_lat = round(lat + lat_offset, 4)
             point_lon = round(lon + lon_offset, 4)
 
-            # StormGlass API Call with DEBUGGING
-            try:
-                params = {
-                    "lat": point_lat,
-                    "lng": point_lon,
-                    "params": "seaTemperature,windSpeed,waveHeight,cloudCover",
-                    "source": "noaa",
-                    "start": datetime.utcnow().isoformat(),
-                    "end": datetime.utcnow().isoformat()
-                }
-                headers = {"Authorization": os.getenv("STORMGLASS_API_KEY")}
-                
-                print(f"Requesting StormGlass for: {point_lat},{point_lon}")  # Debug log
-                
-                response = requests.get(
-                    "https://api.stormglass.io/v2/weather/point",
-                    params=params,
-                    headers=headers
-                )
-                response.raise_for_status()  # Raises HTTPError for bad responses
-                data = response.json()
+            cache_key = f"{point_lat},{point_lon}"
+            cached_data = API_CACHE.get(cache_key)
 
-                if not data.get('hours'):
-                    raise ValueError("Empty data from StormGlass")
+            if cached_data and (now - cached_data['timestamp'] < CACHE_EXPIRY):
+                weather = cached_data['data']
+                print(f"Using cached data for {cache_key}")
+            else:
+                try:
+                    params = {
+                        "lat": point_lat,
+                        "lng": point_lon,
+                        "params": "seaTemperature,windSpeed,waveHeight,cloudCover",
+                        
+                        "start": start_time,
+                        "end": end_time
+                    }
+                    headers = {"Authorization": os.getenv("STORMGLASS_API_KEY")}
+                    print(f"Requesting StormGlass for: {point_lat},{point_lon}")
 
-                weather = data['hours'][0]
-                print("Received data:", weather)  # Debug log
+                    response = requests.get(
+                        "https://api.stormglass.io/v2/weather/point",
+                        params=params,
+                        headers=headers,
+                        timeout=10
+                    )
+                    response.raise_for_status()
+                    data = response.json()
 
-            except Exception as api_err:
-                print(f"API Error: {api_err}")
-                weather = {
-                    "seaTemperature": {"noaa": round(random.uniform(22, 30), 1)},
-                    "windSpeed": {"noaa": round(random.uniform(3, 20), 1)},
-                    "waveHeight": {"noaa": round(random.uniform(0.5, 3.0), 1)},
-                    "cloudCover": {"noaa": random.randint(0, 100)}
-                }
+                    if not data.get('hours'):
+                        raise ValueError("Empty data from StormGlass")
 
-            # Score calculation (unchanged)
+                    weather = data['hours'][0]
+                    API_CACHE[cache_key] = {'data': weather, 'timestamp': now}
+
+                except Exception as api_err:
+                    print(f"API Error: {api_err}")
+                    weather = {
+                        "seaTemperature": {"noaa": round(random.uniform(22, 30), 1)},
+                        "windSpeed": {"noaa": round(random.uniform(3, 20), 1)},
+                        "waveHeight": {"noaa": round(random.uniform(0.5, 3.0), 1)},
+                        "cloudCover": {"noaa": random.randint(0, 100)}
+                    }
+
             score, reasons = score_zone(weather)
-
             zones.append({
                 "lat": point_lat,
                 "lon": point_lon,
@@ -138,5 +144,6 @@ def get_fishing_zones():
     except Exception as e:
         print(f"Endpoint error: {e}")
         return jsonify({"error": str(e)}), 500
+
 if __name__ == "__main__":
     app.run(debug=True)
