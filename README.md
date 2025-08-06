@@ -29,7 +29,7 @@ Fishing Route Optimizer solves these issues by:
 
 ## 🌐 Live Preview (Optional)
 
-> _[Add GitHub Pages Link if deployed]_
+
 
 ---
 
@@ -126,7 +126,7 @@ Fishing Route Optimizer solves these issues by:
 
 ## 🔮 Future Enhancements (Optional)
 
-> (You may implement these if time permits or after the event)
+
 
 - Add catch logging module
 - Real-time weather refresh
@@ -153,3 +153,4 @@ pip install -r requirements.txt
 
 # Run the Flask backend
 python app.py
+
